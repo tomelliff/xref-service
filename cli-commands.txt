@@ -1,0 +1,5 @@
+aws dynamodb create-table --endpoint-url="http://localhost:8000" --table-name xref-service --attribute-definitions AttributeName=global,AttributeType=S --key-schema AttributeName=global,KeyType=HASH --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5
+
+aws dynamodb list-tables --endpoint-url="http://localhost:8000"
+
+aws dynamodb scan --endpoint-url="http://localhost:8000" --table-name xref-service
