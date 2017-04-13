@@ -1,0 +1,91 @@
+{
+    "xref-service": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "e210f3f0-b349-42d1-95b0-a6bc8515a348", 
+                    "m3": "490444"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "9fb5dca9-1892-4a84-8988-964b4b87745d", 
+                    "m3": "508052"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "41c34be1-5db3-42fc-bda9-6e0d117173c1", 
+                    "tp": "8679", 
+                    "m3": "346224"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "726c64bb-c7b2-457a-907f-207735b03262", 
+                    "tp": "2930", 
+                    "m3": "480288"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "eb4e8ee4-bc85-4848-b389-3b0763ed318f", 
+                    "tp": "8449", 
+                    "m3": "901223"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "ab7012fa-b151-4d90-9598-1f583c577f31", 
+                    "tp": "5130", 
+                    "m3": "675534"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "b880730e-d981-4bf7-a3b1-541af52f5bf5", 
+                    "tp": "3983", 
+                    "m3": "735275"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "94ab679c-a0c3-4a0c-9310-ce987a15d419", 
+                    "tp": "2497", 
+                    "m3": "330906"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "c37adfbd-047d-4425-a105-feffa21a7c96", 
+                    "tp": "8279", 
+                    "m3": "719018"
+                }
+            }
+        }, 
+        {
+            "PutRequest": {
+                "Item": {
+                    "global": "74d61089-0914-49c6-8f9d-59ee5cd0523c", 
+                    "m3": "951971"
+                }
+            }
+        }
+    ]
+}
