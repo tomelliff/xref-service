@@ -22,11 +22,11 @@ def create_new_key(table):
     return global_id
 
 
-def get_ids(table, system):
-    if system['key'] == 'global':
-        ids = _get_by_global_id(table, system['value'])
+def get_ids(table, system_object):
+    if system_object['system'] == 'global':
+        ids = _get_by_global_id(table, system_object['id'])
     else:
-        ids = _get_by_system_id(table, system)
+        ids = _get_by_system_id(table, system_object)
 
     return ids
 
@@ -41,9 +41,9 @@ def _get_by_global_id(table, global_id):
     return response['Item']
 
 
-def _get_by_system_id(table, system):
-    system_name = system['key']
-    system_id = system['value']
+def _get_by_system_id(table, system_object):
+    system_name = system_object['system']
+    system_id = system_object['id']
     response = table.query(
         IndexName='{}_system'.format(system_name),
         KeyConditionExpression=Key(system_name).eq(system_id)
@@ -52,14 +52,14 @@ def _get_by_system_id(table, system):
     return response['Items'][0]
 
 
-def link_system_ids(table, system1, system2):
-    if system1['key'] == 'global':
-        global_id = system1['value']
+def link_system_ids(table, system_object1, system_object2):
+    if system_object1['system'] == 'global':
+        global_id = system1['id']
     else:
-        global_id = _get_by_system_id(table, system1)['global']
-        print(global_id)
+        global_id = _get_by_system_id(table, system_object1)['global']
 
-    changes = _link_system(table, global_id, system2['key'], system2['value'])
+    changes = _link_system(table, global_id, system_object2['system'],
+                           system_object2['id'])
 
     return changes
 
@@ -78,11 +78,11 @@ def _link_system(table, global_id, system, system_id):
 
 
 def delete_id(table, system_object):
-    if system_object['key'] == 'global':
-        _delete_global_id(table, system_object['value'])
+    if system_object['system'] == 'global':
+        _delete_global_id(table, system_object['id'])
     else:
         global_id = _get_by_system_id(table, system_object)['global']
-        _delete_system_id(table, global_id, system_object['key'])
+        _delete_system_id(table, global_id, system_object['system'])
 
 
 def _delete_global_id(table, global_id):
@@ -120,18 +120,18 @@ def get_specific_id(table, system_object1, system_wanted):
 
 #print(create_new_key(table))
 
-system1 = {'key': 'global', 'value': 'd7234b98-c8e6-4103-9348-4d017195d04b'}
-system2 = {'key': 'm3', 'value': '6666'}
-system3 = {'key': 'global', 'value': '572b21aa-07fd-4349-a621-abe3b9bd1a40'}
-system4 = {'key': 'tp', 'value': '1235'}
-system5 = {'key': 'tp', 'value': '1236'}
+system1 = {'system': 'global', 'id': 'eb4e8ee4-bc85-4848-b389-3b0763ed318f'}
+system2 = {'system': 'm3', 'id': '6666'}
+system3 = {'system': 'global', 'id': '572b21aa-07fd-4349-a621-abe3b9bd1a40'}
+system4 = {'system': 'tp', 'id': '1235'}
+system5 = {'system': 'tp', 'id': '1236'}
 
 #print(link_system_ids(table, system1, system2))
 #print(link_system_ids(table, system2, system5))
 
 #delete_id(table, system2)
 
-print(get_specific_id(table, system4, 'm3'))
+#print(get_specific_id(table, system4, 'm3'))
 
 
-#print(get_ids(table, system4))
+#print(get_ids(table, system1))
