@@ -1,0 +1,76 @@
+service: xref-service
+provider:
+  name: aws
+  runtime: python2.7
+  stage: dev
+  region: eu-west-1
+  timeout: 30
+  environment:
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}
+
+package:
+ exclude:
+   - env/**
+
+functions:
+  get_ids:
+    handler: handler.get_ids
+    events:
+      - http:
+          path: ${self:service}/{system}/{system_id}
+          method: get
+
+resources:
+  Resources:
+    XrefServiceDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: global
+            AttributeType: S
+          -
+            AttributeName: m3
+            AttributeType: S
+          -
+            AttributeName: tp
+            AttributeType: S
+        KeySchema:
+          -
+            AttributeName: global
+            KeyType: HASH
+        GlobalSecondaryIndexes:
+        - IndexName: m3_system
+          KeySchema:
+          - AttributeName: m3
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        - IndexName: tp_system
+          KeySchema:
+          - AttributeName: tp
+            KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:provider.environment.DYNAMODB_TABLE}
