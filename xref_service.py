@@ -12,14 +12,16 @@ dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
 table = dynamodb.Table('xref-service')
 
 def create_new_key(table):
-    global_id = uuid.uuid4()
-    response = table.put_item(
+    global_id = str(uuid.uuid4())
+    table.put_item(
         Item={
-            'global': str(global_id)
+            'global': global_id
         }
     )
 
-    return global_id
+    response = {'global': global_id}
+
+    return response
 
 
 def get_ids(table, system_object):

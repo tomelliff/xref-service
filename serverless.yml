@@ -17,7 +17,7 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}
+      Resource: arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DYNAMODB_TABLE}*
 
 package:
  exclude:
@@ -28,14 +28,31 @@ functions:
     handler: handler.get_ids
     events:
       - http:
-          path: ${self:service}/{system}/{system_id}
+          path: ${self:service}/{system1}/{system1_id}
           method: get
+  new_global_id:
+    handler: handler.new_global_id
+    events:
+      - http:
+          path: ${self:service}/global/
+          method: post
+  link_system_ids:
+    handler: handler.link_system_ids
+    events:
+      - http:
+          path: ${self:service}/{system1}/{system1_id}/{system2}/{system2_id}
+          method: put
+  delete_id:
+    handler: handler.delete_id
+    events:
+      - http:
+          path: ${self:service}/{system1}/{system1_id}
+          method: delete
 
 resources:
   Resources:
     XrefServiceDynamoDbTable:
       Type: 'AWS::DynamoDB::Table'
-      DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
           -
