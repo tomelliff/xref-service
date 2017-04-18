@@ -6,20 +6,23 @@ stages:
   - contract_test
 
 local_test:
+  stage: local_test
   before_script:
-    pip install -r requirements-dev.txt
+    - pip install -r requirements-dev.txt
   script:
     make test
 
 deploy:
+  stage: deploy
   image: node:alpine
   before_script:
-    npm install -g serverless
+    - npm install -g serverless
   script:
     make deploy
 
 contract_test:
+  stage: contract_test
   before_script:
-    pip install -r requirements-dev.txt
+    - pip install -r requirements-dev.txt
   script:
     make contract
