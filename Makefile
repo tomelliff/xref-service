@@ -1,3 +1,5 @@
+PYTHON_TEST_DISCOVER=python -m unittest discover
+
 .PHONY: all
 all: test
 
@@ -10,12 +12,16 @@ flake8:
 
 .PHONY: unit
 unit:
-	python -m unittest discover --start-directory test/unit
+	$(PYTHON_TEST_DISCOVER) --start-directory test/unit
 
 .PHONY: integration
 integration:
-	python -m unittest discover --start-directory test/integration
+	$(PYTHON_TEST_DISCOVER) --start-directory test/integration
 
 .PHONY: contract
 contract:
-	python -m unittest discover --start-directory test/contract
+	$(PYTHON_TEST_DISCOVER) --start-directory test/contract
+
+.PHONY: deploy
+deploy:
+	serverless deploy
