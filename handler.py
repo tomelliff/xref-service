@@ -7,9 +7,10 @@ from xref_service import xref_service
 
 dynamodb = boto3.resource('dynamodb')
 
-table_name=os.environ['DYNAMODB_TABLE']
+table_name = os.environ['DYNAMODB_TABLE']
 
 table = dynamodb.Table(table_name)
+
 
 def get_ids(event, context):
     path_parameters = event['pathParameters']
@@ -64,7 +65,7 @@ def delete_id(event, context):
     system_id = path_parameters['system1_id']
     system_object = {'system': system, 'id': system_id}
 
-    ids = xref_service.delete_id(table, system_object)
+    xref_service.delete_id(table, system_object)
 
     response = {
         "statusCode": 200

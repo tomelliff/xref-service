@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 from __future__ import print_function
-import json
 import uuid
 
 from botocore.exceptions import ClientError
@@ -10,6 +9,7 @@ from boto3.dynamodb.conditions import Key
 dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
 
 table = dynamodb.Table('xref-service')
+
 
 def create_new_key(table):
     global_id = str(uuid.uuid4())
@@ -56,7 +56,7 @@ def _get_by_system_id(table, system_object):
 
 def link_system_ids(table, system_object1, system_object2):
     if system_object1['system'] == 'global':
-        global_id = system1['id']
+        global_id = system_object1['id']
     else:
         global_id = _get_by_system_id(table, system_object1)['global']
 
@@ -89,11 +89,12 @@ def delete_id(table, system_object):
 
 def _delete_global_id(table, global_id):
     try:
-        response = table.delete_item(
+        table.delete_item(
             Key={
                 'global': global_id
             },
-            ConditionExpression="attribute_not_exists(m3) and attribute_not_exists(tp)",
+            ConditionExpression="""attribute_not_exists(m3) and
+                                   attribute_not_exists(tp)""",
         )
     except ClientError as e:
         if e.response['Error']['Code'] == "ConditionalCheckFailedException":
@@ -118,22 +119,3 @@ def get_specific_id(table, system_object1, system_wanted):
     id = get_ids(table, system_object1)[system_wanted]
 
     return id
-
-
-#print(create_new_key(table))
-
-system1 = {'system': 'global', 'id': 'eb4e8ee4-bc85-4848-b389-3b0763ed318f'}
-system2 = {'system': 'm3', 'id': '6666'}
-system3 = {'system': 'global', 'id': '572b21aa-07fd-4349-a621-abe3b9bd1a40'}
-system4 = {'system': 'tp', 'id': '1235'}
-system5 = {'system': 'tp', 'id': '1236'}
-
-#print(link_system_ids(table, system1, system2))
-#print(link_system_ids(table, system2, system5))
-
-#delete_id(table, system2)
-
-#print(get_specific_id(table, system4, 'm3'))
-
-
-#print(get_ids(table, system1))
