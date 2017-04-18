@@ -1,0 +1,25 @@
+image: python:2-alpine
+
+stages:
+  - local_test
+  - deploy
+  - contract_test
+
+local_test:
+  before_script:
+    pip install -r requirements-dev.txt
+  script:
+    make test
+
+deploy:
+  image: node:alpine
+  before_script:
+    npm install -g serverless
+  script:
+    make deploy
+
+contract_test:
+  before_script:
+    pip install -r requirements-dev.txt
+  script:
+    make contract
