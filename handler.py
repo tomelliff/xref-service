@@ -3,7 +3,7 @@ import os
 
 import boto3
 
-import xref_service
+from xref_service import xref_service
 
 dynamodb = boto3.resource('dynamodb')
 
