@@ -8,6 +8,11 @@ stages:
   - deploy
   - contract_test
 
+lint:
+  stage: local_test
+  script:
+    - flake8 --exclude .git,env,test/local
+
 unit_test:
   stage: local_test
   script:
