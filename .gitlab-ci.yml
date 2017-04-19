@@ -33,8 +33,18 @@ deploy:
     - npm install -g serverless
   script:
     - serverless deploy
+    - echo "export SERVICE_ENDPOINT=$(serverless info --verbose | grep ServiceEndpoint | cut -d" " -f2)" >> variables
+  artifacts:
+    paths:
+      - variables
+    expire_in: 1 hour
+  only:
+    - master
 
 contract_test:
   stage: contract_test
   script:
+    - source variables
     - python -m unittest discover --start-directory test/contract
+  only:
+    - master
