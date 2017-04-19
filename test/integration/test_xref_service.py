@@ -1,14 +1,20 @@
 #!/usr/bin/env python
 from __future__ import absolute_import
+import os
 import unittest
 
 import boto3
 
 from xref_service import xref_service
 
-dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
+dynamodb_host = os.environ.get('DYNAMODB_HOST', 'localhost')
+dynamodb_table = os.environ.get('DYNAMODB_TABLE', 'xref-service')
 
-table = dynamodb.Table('xref-service')
+dynamodb = boto3.resource('dynamodb', endpoint_url='http://{}:8000'.format(
+    dynamodb_host
+))
+
+table = dynamodb.Table(dynamodb_table)
 
 
 class TestGet(unittest.TestCase):

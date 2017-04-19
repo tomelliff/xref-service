@@ -9,14 +9,24 @@ AWS.
 import argparse
 import json
 import random
+import os
 import uuid
 
 import boto3
 
-dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000')
+dynamodb_host = os.environ.get('DYNAMODB_HOST', 'localhost')
+dynamodb_table = os.environ.get('DYNAMODB_TABLE', 'xref-service')
 
-TABLE_NAME = 'xref-service'
-TEST_DATA_FILE = 'test_data.json'
+dynamodb = boto3.resource('dynamodb', endpoint_url='http://{}:8000'.format(
+    dynamodb_host
+))
+
+table = dynamodb.Table(dynamodb_table)
+
+dir = os.path.dirname(__file__)
+TEST_DATA_FILE_NAME = 'test_data.json'
+TEST_DATA_FILE = os.path.join(dir, TEST_DATA_FILE_NAME)
+
 
 def create_table(dynamodb, table_name):
     dynamodb.create_table(
@@ -124,10 +134,10 @@ if __name__ == '__main__':
     parser.add_argument('action', choices=['create', 'delete', 'populate', 'generate'])
     args = parser.parse_args()
     if args.action == 'create':
-        create_table(dynamodb, TABLE_NAME)
+        create_table(dynamodb, dynamodb_table)
     elif args.action == 'delete':
-        delete_table(dynamodb, TABLE_NAME)
+        delete_table(dynamodb, dynamodb_table)
     elif args.action == 'populate':
-        add_test_data(dynamodb, TABLE_NAME, TEST_DATA_FILE)
+        add_test_data(dynamodb, dynamodb_table, TEST_DATA_FILE)
     elif args.action == 'generate':
-        generate_test_data(TABLE_NAME, TEST_DATA_FILE)
+        generate_test_data(dynamodb_table, TEST_DATA_FILE)

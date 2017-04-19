@@ -15,6 +15,12 @@ unit_test:
 
 integration_test:
   stage: local_test
+  services: dwmkerr/dynamodb:latest
+  variables:
+    DYNAMODB_HOST: dynamodb
+  before_script:
+    - python test/local/table.py create
+    - python test/local/table.py populate
   script:
     - python -m unittest discover --start-directory test/integration
 
