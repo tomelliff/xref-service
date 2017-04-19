@@ -20,6 +20,7 @@ integration_test:
   variables:
     DYNAMODB_HOST: dynamodb
   before_script:
+    - pip install -r requirements-dev.txt
     - python test/local/table.py create
     - python test/local/table.py populate
   script:
