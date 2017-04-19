@@ -4,7 +4,14 @@ PYTHON_TEST_DISCOVER=python -m unittest discover
 all: test
 
 .PHONY: test
-test: flake8 unit integration
+test: lint unit integration
+
+.PHONY: lint
+lint: gitlab-ci-lint flake8
+
+.PHONY: gitlab-ci-lint
+gitlab-ci-lint:
+	./lint-gitlab-ci.sh
 
 .PHONY: flake8
 flake8:
