@@ -42,7 +42,7 @@ deploy:
   artifacts:
     paths:
       - variables
-    expire_in: 1 hour
+      - .serverless/xref-service.zip
   only:
     - master
 
