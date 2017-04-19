@@ -38,11 +38,12 @@ deploy:
     - npm install -g serverless
   script:
     - serverless deploy
-    - echo "export SERVICE_ENDPOINT=$(serverless info --verbose | grep ServiceEndpoint | cut -d" " -f2)" >> variables
+    - echo "export SERVICE_ENDPOINT=$(serverless info --verbose | grep ServiceEndpoint | cut -d" " -f2)" > variables
+    - echo "export SERVICE_NAME=$(serverless info --verbose | grep "service:" | cut -d" " -f2)" >> variables
   artifacts:
     paths:
       - variables
-      - .serverless/xref-service.zip
+      - .serverless/xref-service*.zip
     expire_in: 10 minutes
   only:
     - master
