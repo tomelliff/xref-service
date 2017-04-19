@@ -18,7 +18,7 @@ integration_test:
   services:
     - dwmkerr/dynamodb:latest
   variables:
-    DYNAMODB_HOST: dynamodb
+    DYNAMODB_HOST: dwmkerr-dynamodb
   before_script:
     - pip install -r requirements-dev.txt
     - python test/local/table.py create
