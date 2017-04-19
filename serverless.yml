@@ -1,12 +1,19 @@
-service: xref-service
+service: xref-service-${opt:type, self:custom.defaultType}
+custom:
+  defaultType: generic
+  defaultStage: dev
+  profiles:
+    dev: default
+    test: ecommtest
 provider:
   name: aws
   runtime: python2.7
-  stage: dev
+  stage: ${opt:stage, self:custom.defaultStage}
+  profile: ${self:custom.profiles.${self:provider.stage}}
   region: eu-west-1
   timeout: 30
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}-${opt:type, self:custom.defaultType}
   iamRoleStatements:
     - Effect: Allow
       Action:
