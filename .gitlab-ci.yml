@@ -43,6 +43,7 @@ deploy:
     paths:
       - variables
       - .serverless/xref-service.zip
+    expire_in: 10 minutes
   only:
     - master
 
@@ -51,5 +52,8 @@ contract_test:
   script:
     - source variables
     - python -m unittest discover --start-directory test/contract
+  artifacts:
+    paths:
+      - .serverless/xref-service.zip
   only:
     - master

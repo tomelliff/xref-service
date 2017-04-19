@@ -18,5 +18,10 @@ class TestPost(unittest.TestCase):
         self.assertEqual(len(r.json()), 1)
 
 
+class TestFail(unittest.TestCase):
+    def test_deliberate_fail(self):
+        self.assertTrue(False)
+
+
 if __name__ == '__main__':
     unittest.main()
